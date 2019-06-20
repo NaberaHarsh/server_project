@@ -8,7 +8,7 @@ const cors=require("cors")
 const server=express();
 
 server.use(bodyParser.json())
-// server.use(bodyParser.urlencoded())
+server.use(bodyParser.urlencoded())
 // server.use(logger())
 server.use(cors());
 
@@ -21,8 +21,7 @@ id:Number,
 name:String,
 price:Number,
 jewellery_type:String,
-ocassion:String,
-img: { data: Buffer, contentType: String }
+ocassion:String
 })
 
 
@@ -32,13 +31,12 @@ const Product=mongoose.model('Product',productSchema);
 server.post("/product",(req,res)=>{
     let product= new Product();
 
-    product.category="earring";
-    product.id="3";
-    product.name="new earring";
-    product.price="800";
-    product.jewellery_type="AD";
-    product.ocassion="diwali";
-    product.img="../asset/earring.jpg"
+    product.category=req.body.category;
+    product.id=req.body.id;
+    product.name=req.body.name;
+    product.price=req.body.price;
+    product.jewellery_type=req.body.jewellery_type;
+    product.ocassion=req.body.ocassion;
 
     console.log(product);
     product.save();
