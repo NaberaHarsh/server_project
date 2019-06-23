@@ -91,12 +91,19 @@ server.get("/earring",function(req,res){
     })
 })
 
-// server.get("/cartItem",function(req,res){
-//     Cart.find({},function(err,doc){
-//         res,json(doc);
-//         console.log(doc);
-//     })
-// })
+server.get("/cartItem",function(req,res){
+    Cart.find({},function(err,doc){
+        res.json(doc);
+        console.log(doc);
+    })
+})
+
+server.delete("/deleteCartItem/:id",(req,res)=>{
+    Cart.findOneAndDelete({_id:req.params.id},function(err,doc){
+        console.log(doc);
+        res.json(doc);
+    })
+})
 
 
 server.listen(8080,()=>{
