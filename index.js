@@ -150,6 +150,20 @@ server.get("/getAddress",function(req,res){
     })
 })
 
+server.get("/sortAscending",function(req,res){
+    Product.find({category:"Earring"},function(err,doc){
+        res.json(doc);
+        console.log(doc);
+    }).sort({price:1})
+})
+
+server.get("/sortDescending",function(req,res){
+    Product.find({category:"Earring"},function(err,doc){
+        res.json(doc);
+        console.log(doc);
+    }).sort({price:-1})
+})
+
 server.delete("/deleteCartItem/:id",(req,res)=>{
     Cart.findOneAndDelete({_id:req.params.id},function(err,doc){
         console.log(doc);
