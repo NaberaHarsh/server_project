@@ -35,9 +35,27 @@ const cartSchema= new Schema({
     quantity:Number
 })
 
+const addressSchema= new Schema({ 
+          name:String,
+          house:String,
+          street:String,
+          city:String,
+          state:String,
+          pincode:Number,
+          mail:String,
+          pno:Number      
+})
+
+const orderSchema = new Schema({
+cartinfo:String,
+address:String
+})
+
 
 const Product=mongoose.model('Product',productSchema);
 const Cart=mongoose.model('Cart', cartSchema)
+const Address= mongoose.model('Address', addressSchema)
+const Order= mongoose.model('Order', orderSchema)
 
 server.post('/profile', upload.single('avatar'), function (req, res, next) {
     // req.file is the `avatar` file
@@ -70,7 +88,6 @@ server.post("/product",(req,res)=>{
 
 server.post("/showcart",(req,res)=>{
     let cart=new Cart();
-    let product= new Product();
 
     cart.id=req.body.id;
     cart.name=req.body.name;
@@ -81,6 +98,34 @@ server.post("/showcart",(req,res)=>{
     console.log(cart);
     cart.save();
 })
+
+server.post("/userAddress",(req,res)=>{
+    let address= new Address();
+
+    address.name=req.body.name;
+    address.house=req.body.house;
+    address.street=req.body.street;
+    address.city=req.body.city;
+    address.state=req.body.state;
+    address.pincode=req.body.pincode;
+    address.mail=req.body.mail;
+    address.pno=req.body.pno;
+   
+    console.log(address);
+    address.save();
+    res.json(address);
+})
+
+server.post("/showorder",(req,res)=>{
+    let order=new Order();
+
+    order.cartinfo=req.body.cartinfo;
+    order.address=req.body.address;
+    
+    console.log(order);
+    order.save();
+})
+
 
 server.get("/earring",function(req,res){
     Product.find({category:"Earring"},function(err,doc){
@@ -98,12 +143,21 @@ server.get("/cartItem",function(req,res){
     })
 })
 
+server.get("/getAddress",function(req,res){
+    Address.find({},function(err,doc){
+        res.json(doc);
+        console.log(doc);
+    })
+})
+
 server.delete("/deleteCartItem/:id",(req,res)=>{
     Cart.findOneAndDelete({_id:req.params.id},function(err,doc){
         console.log(doc);
         res.json(doc);
     })
 })
+
+
 
 
 server.listen(8080,()=>{
