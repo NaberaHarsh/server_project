@@ -5,15 +5,25 @@ const mongoose=require('mongoose')
 const Schema=mongoose.Schema
 const cors=require("cors")
 var multer  = require('multer')
-var upload = multer({ dest: 'uploads/' })
+const path = require('path');
+
+const storage = multer.diskStorage({
+    destination : function(req,file,cb){
+        cb(null,'./uploads');
+    },
+    filename: function(req,file,cb){
+        cb(null, file.originalname);
+    }
+});
+var upload = multer({ storage: storage });
 
 const server=express();
-
 server.use(bodyParser.json())
 // server.use(bodyParser.urlencoded())
 // server.use(logger())
 server.use(cors());
-
+server.use(express.static('uploads'));
+// server.use('/uploads')
 mongoose.connect('mongodb://localhost:27017/Mahek_Jewellery', {useNewUrlParser: true});
 
 
@@ -24,7 +34,7 @@ name:String,
 price:Number,
 jewellery_type:String,
 ocassion:String,
-image:String
+image:String 
 })
 
 const cartSchema= new Schema({
@@ -57,17 +67,11 @@ const Cart=mongoose.model('Cart', cartSchema)
 const Address= mongoose.model('Address', addressSchema)
 const Order= mongoose.model('Order', orderSchema)
 
-server.post('/profile', upload.single('avatar'), function (req, res, next) {
+server.post('/profile', upload.single("file"), function (req, res, next) {
     // req.file is the `avatar` file
-    console.log(req.file)
+    console.log(req.file.filename);
     // req.body will hold the text fields, if there were any
-    res.json(req.file)
-
-    let product= new Product();
-
-    product.image=req.file.path;
-    product.save();
-  
+    res.json(req.file.filename);
   })
 
 
@@ -80,7 +84,7 @@ server.post("/product",(req,res)=>{
     product.price=req.body.price;
     product.jewellery_type=req.body.jewellery_type;
     product.ocassion=req.body.ocassion;
-
+    product.image= req.body.image;
     console.log(product);
     product.save();
     res.json(product);
