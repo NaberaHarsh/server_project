@@ -34,7 +34,8 @@ name:String,
 price:Number,
 jewellery_type:String,
 ocassion:String,
-image:String 
+image:String,
+desc:String 
 })
 
 const cartSchema= new Schema({
@@ -85,6 +86,8 @@ server.post("/product",(req,res)=>{
     product.jewellery_type=req.body.jewellery_type;
     product.ocassion=req.body.ocassion;
     product.image= req.body.image;
+    product.desc=req.body.desc;
+
     console.log(product);
     product.save();
     res.json(product);
