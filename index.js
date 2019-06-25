@@ -35,7 +35,9 @@ price:Number,
 jewellery_type:String,
 ocassion:String,
 image:String,
-desc:String 
+desc:String ,
+best:String,
+new:String
 })
 
 const cartSchema= new Schema({
@@ -87,6 +89,10 @@ server.post("/product",(req,res)=>{
     product.ocassion=req.body.ocassion;
     product.image= req.body.image;
     product.desc=req.body.desc;
+    product.best=req.body.best;
+    product.new=req.body.new;
+
+
 
     console.log(product);
     product.save();
@@ -177,6 +183,94 @@ server.delete("/deleteCartItem/:id",(req,res)=>{
         res.json(doc);
     })
 })
+
+server.get("/filter0", function(req,res){
+    Product.find({$and: [ {category:"Earring"} , {price:{$lt:500}} ]},function(err,doc){
+        res.json(doc);
+        console.log(doc);
+    })
+})
+
+server.get("/filter500", function(req,res){
+    Product.find({$and: [ {category:"Earring"} , {price:{$gte:500}}, {price:{$lt:1500}} ]},function(err,doc){
+        res.json(doc);
+        console.log(doc);
+    })
+})
+
+server.get("/filter1500", function(req,res){
+    Product.find({$and: [ {category:"Earring"} , {price:{$gte:1500}}, {price:{$lt:2500}} ]},function(err,doc){
+        res.json(doc);
+        console.log(doc);
+    })
+})
+
+server.get("/filter2500", function(req,res){
+    Product.find({$and: [ {category:"Earring"} , {price:{$gte:2500}}, {price:{$lt:5000}} ]},function(err,doc){
+        res.json(doc);
+        console.log(doc);
+    })
+})
+
+server.get("/filter5000", function(req,res){
+    Product.find({$and: [ {category:"Earring"} , {price:{$gte:5000}} ]},function(err,doc){
+        res.json(doc);
+        console.log(doc);
+    })
+})
+
+server.get("/AD", function(req,res){
+    Product.find({$and: [ {category:"Earring"} , {jewellery_type:"AD"} ]},function(err,doc){
+        res.json(doc);
+        console.log(doc);
+    })
+})
+
+server.get("/VJ", function(req,res){
+    Product.find({$and: [ {category:"Earring"} , {jewellery_type:"Victorian Jewellery"} ]},function(err,doc){
+        res.json(doc);
+        console.log(doc);
+    })
+})
+
+server.get("/AM", function(req,res){
+    Product.find({$and: [ {category:"Earring"} , {jewellery_type:"Antique Items"} ]},function(err,doc){
+        res.json(doc);
+        console.log(doc);
+    })
+})
+server.get("/wedding", function(req,res){
+    Product.find({$and: [ {category:"Earring"} , {ocassion:"Wedding"} ]},function(err,doc){
+        res.json(doc);
+        console.log(doc);
+    })
+})
+server.get("/diwali", function(req,res){
+    Product.find({$and: [ {category:"Earring"} , {ocassion:"Diwali"} ]},function(err,doc){
+        res.json(doc);
+        console.log(doc);
+    })
+})
+server.get("/navratra", function(req,res){
+    Product.find({$and: [ {category:"Earring"} , {ocassion:"Navratra"} ]},function(err,doc){
+        res.json(doc);
+        console.log(doc);
+    })
+})
+server.get("/best", function(req,res){
+    Product.find({$and: [ {category:"Earring"} , {best:"Yes"} ]},function(err,doc){
+        res.json(doc);
+        console.log(doc);
+    })
+})
+server.get("/newArrival", function(req,res){
+    Product.find({$and: [ {category:"Earring"} , {new:"Yes"} ]},function(err,doc){
+        res.json(doc);
+        console.log(doc);
+    })
+})
+
+
 
 
 
