@@ -60,8 +60,9 @@ const addressSchema= new Schema({
 })
 
 const orderSchema = new Schema({
-cartinfo:String,
-address:String
+cartinfo:Array,
+name:String,
+
 })
 
 
@@ -137,17 +138,20 @@ server.post("/showorder",(req,res)=>{
     
     console.log(order);
     order.save();
+    res,json(order)
 })
 
 
-server.get("/earring",function(req,res){
-    Product.find({category:"Earring"},function(err,doc){
+
+server.get("/read/:category",function(req,res){
+    Product.find({category:req.params.category},function(err,doc){
         res.json(doc);
-        console.log(doc);
-        
-               
+        console.log(doc);          
     })
 })
+
+
+
 
 server.get("/cartItem",function(req,res){
     Cart.find({},function(err,doc){
@@ -184,87 +188,88 @@ server.delete("/deleteCartItem/:id",(req,res)=>{
     })
 })
 
-server.get("/filter0", function(req,res){
-    Product.find({$and: [ {category:"Earring"} , {price:{$lt:500}} ]},function(err,doc){
+server.get("/filter0/:category", function(req,res){
+    Product.find({$and: [ {category:req.params.category} , {price:{$lt:500}} ]},function(err,doc){
         res.json(doc);
         console.log(doc);
     })
 })
 
-server.get("/filter500", function(req,res){
-    Product.find({$and: [ {category:"Earring"} , {price:{$gte:500}}, {price:{$lt:1500}} ]},function(err,doc){
+server.get("/filter500/:flag", function(req,res){
+    console.log(req.params.flag)
+    Product.find({$and: [ {category:req.params.flag} , {price:{$gte:500}}, {price:{$lt:1500}} ]},function(err,doc){
         res.json(doc);
         console.log(doc);
     })
 })
 
-server.get("/filter1500", function(req,res){
-    Product.find({$and: [ {category:"Earring"} , {price:{$gte:1500}}, {price:{$lt:2500}} ]},function(err,doc){
+server.get("/filter1500/:category", function(req,res){
+    Product.find({$and: [ {category:req.params.category} , {price:{$gte:1500}}, {price:{$lt:2500}} ]},function(err,doc){
         res.json(doc);
         console.log(doc);
     })
 })
 
-server.get("/filter2500", function(req,res){
-    Product.find({$and: [ {category:"Earring"} , {price:{$gte:2500}}, {price:{$lt:5000}} ]},function(err,doc){
+server.get("/filter2500/:category", function(req,res){
+    Product.find({$and: [ {category:req.params.category} , {price:{$gte:2500}}, {price:{$lt:5000}} ]},function(err,doc){
         res.json(doc);
         console.log(doc);
     })
 })
 
-server.get("/filter5000", function(req,res){
-    Product.find({$and: [ {category:"Earring"} , {price:{$gte:5000}} ]},function(err,doc){
+server.get("/filter5000/:category", function(req,res){
+    Product.find({$and: [ {category:req.params.category} , {price:{$gte:5000}} ]},function(err,doc){
         res.json(doc);
         console.log(doc);
     })
 })
 
-server.get("/AD", function(req,res){
-    Product.find({$and: [ {category:"Earring"} , {jewellery_type:"AD"} ]},function(err,doc){
+server.get("/AD/:category", function(req,res){
+    Product.find({$and: [ {category:req.params.category} , {jewellery_type:"AD"} ]},function(err,doc){
         res.json(doc);
         console.log(doc);
     })
 })
 
-server.get("/VJ", function(req,res){
-    Product.find({$and: [ {category:"Earring"} , {jewellery_type:"Victorian Jewellery"} ]},function(err,doc){
+server.get("/VJ/:category", function(req,res){
+    Product.find({$and: [ {category:req.params.category} , {jewellery_type:"Victorian Jewellery"} ]},function(err,doc){
         res.json(doc);
         console.log(doc);
     })
 })
 
-server.get("/AM", function(req,res){
-    Product.find({$and: [ {category:"Earring"} , {jewellery_type:"Antique Items"} ]},function(err,doc){
+server.get("/AM/:category", function(req,res){
+    Product.find({$and: [ {category:req.params.category} , {jewellery_type:"Antique Items"} ]},function(err,doc){
         res.json(doc);
         console.log(doc);
     })
 })
-server.get("/wedding", function(req,res){
-    Product.find({$and: [ {category:"Earring"} , {ocassion:"Wedding"} ]},function(err,doc){
+server.get("/wedding/:category", function(req,res){
+    Product.find({$and: [ {category:req.params.category} , {ocassion:"Wedding"} ]},function(err,doc){
         res.json(doc);
         console.log(doc);
     })
 })
-server.get("/diwali", function(req,res){
-    Product.find({$and: [ {category:"Earring"} , {ocassion:"Diwali"} ]},function(err,doc){
+server.get("/diwali/:category", function(req,res){
+    Product.find({$and: [ {category:req.params.category} , {ocassion:"Diwali"} ]},function(err,doc){
         res.json(doc);
         console.log(doc);
     })
 })
-server.get("/navratra", function(req,res){
-    Product.find({$and: [ {category:"Earring"} , {ocassion:"Navratra"} ]},function(err,doc){
+server.get("/navratra/:category", function(req,res){
+    Product.find({$and: [ {category:req.params.category}, {ocassion:"Navratra"} ]},function(err,doc){
         res.json(doc);
         console.log(doc);
     })
 })
-server.get("/best", function(req,res){
-    Product.find({$and: [ {category:"Earring"} , {best:"Yes"} ]},function(err,doc){
+server.get("/best/:category", function(req,res){
+    Product.find({$and: [ {category:req.params.category} , {best:"Yes"} ]},function(err,doc){
         res.json(doc);
         console.log(doc);
     })
 })
-server.get("/newArrival", function(req,res){
-    Product.find({$and: [ {category:"Earring"} , {new:"Yes"} ]},function(err,doc){
+server.get("/newArrival/:category", function(req,res){
+    Product.find({$and: [ {category:req.params.category} , {new:"Yes"} ]},function(err,doc){
         res.json(doc);
         console.log(doc);
     })
