@@ -40,6 +40,23 @@ best:String,
 new:String
 })
 
+const subscribeSchema= new Schema({
+mail:String
+})
+const accountSchema= new Schema({
+    name:String,
+    phone:String,
+    mail:String,
+    pass:String
+    })
+
+const feedbackSchema= new Schema({
+    category:String,
+    ontime:String,
+    satisfy:String,
+    area:String,
+    })
+
 const cartSchema= new Schema({
     id:Number,
     name:String,
@@ -78,6 +95,10 @@ const Product=mongoose.model('Product',productSchema);
 const Cart=mongoose.model('Cart', cartSchema)
 const Address= mongoose.model('Address', addressSchema)
 const Order= mongoose.model('Order', orderSchema)
+const Feedback= mongoose.model('Feedback', feedbackSchema)
+const Subscribe= mongoose.model('Subscribe', subscribeSchema)
+const Account= mongoose.model('Account', accountSchema)
+
 
 server.post('/profile', upload.single("file"), function (req, res, next) {
     // req.file is the `avatar` file
@@ -121,6 +142,20 @@ server.post("/showcart",(req,res)=>{
     cart.save();
 })
 
+server.post("/account",(req,res)=>{
+    let account=new Account();
+
+    
+    account.name=req.body.name;
+    account.phone=req.body.phone;
+    account.mail=req.body.mail;
+    account.pass=req.body.pass;
+
+    console.log(account);
+    account.save();
+    res.json(account);
+})
+
 server.post("/userAddress",(req,res)=>{
     let address= new Address();
 
@@ -157,6 +192,28 @@ server.post("/showorder",(req,res)=>{
     res,json(order)
 })
 
+server.post("/feedback",(req,res)=>{
+            let feedback= new Feedback();
+        
+            feedback.category=req.body.category;
+            feedback.ontime=req.body.ontime;
+            feedback.satisfy=req.body.satisfy;
+            feedback.area=req.body.area;
+                          
+            console.log(feedback);
+            feedback.save();
+            res.json(feedback);
+        })
+
+        server.post("/subscribe",(req,res)=>{
+            let subscribe= new Subscribe();
+        
+            subscribe.mail=req.body.mail;
+                          
+            console.log(subscribe);
+            subscribe.save();
+            res.json(subscribe);
+        })
 
 
 server.get("/read/:category",function(req,res){
