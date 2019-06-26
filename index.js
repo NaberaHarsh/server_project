@@ -62,6 +62,14 @@ const addressSchema= new Schema({
 const orderSchema = new Schema({
 cartinfo:Array,
 name:String,
+          house:String,
+          street:String,
+          city:String,
+          state:String,
+          pincode:Number,
+          mail:String,
+          pno:Number,
+          date:{type:Date, default: Date.now}
 
 })
 
@@ -134,7 +142,15 @@ server.post("/showorder",(req,res)=>{
     let order=new Order();
 
     order.cartinfo=req.body.cartinfo;
-    order.address=req.body.address;
+   order.name=req.body.name;
+    order.house=req.body.house;
+    order.street=req.body.street;
+    order.city=req.body.city;
+    order.state=req.body.state;
+    order.pincode=req.body.pincode;
+    order.mail=req.body.mail;
+    order.pno=req.body.pno;
+    order.date=new Date();
     
     console.log(order);
     order.save();
@@ -166,16 +182,22 @@ server.get("/getAddress",function(req,res){
         console.log(doc);
     })
 })
+server.get("/getorder",function(req,res){
+    Order.find({},function(err,doc){
+        res.json(doc);
+        console.log(doc);
+    })
+})
 
-server.get("/sortAscending",function(req,res){
-    Product.find({category:"Earring"},function(err,doc){
+server.get("/sortAscending/:category",function(req,res){
+    Product.find({category:req.params.category},function(err,doc){
         res.json(doc);
         console.log(doc);
     }).sort({price:1})
 })
 
-server.get("/sortDescending",function(req,res){
-    Product.find({category:"Earring"},function(err,doc){
+server.get("/sortDescending/:category",function(req,res){
+    Product.find({category:req.params.category},function(err,doc){
         res.json(doc);
         console.log(doc);
     }).sort({price:-1})
