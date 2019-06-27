@@ -223,8 +223,12 @@ server.get("/read/:category",function(req,res){
     })
 })
 
-
-
+server.get("/type/:name",function(req,res){
+    Product.find({jewellery_type:req.params.name},function(err,doc){
+        res.json(doc);
+        console.log(doc);
+    })
+})
 
 server.get("/cartItem",function(req,res){
     Cart.find({},function(err,doc){
