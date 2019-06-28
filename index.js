@@ -23,8 +23,18 @@ server.use(bodyParser.json())
 // server.use(logger())
 server.use(cors());
 server.use(express.static('uploads'));
-// server.use('/uploads')
-mongoose.connect('mongodb://localhost:27017/Mahek_Jewellery', {useNewUrlParser: true});
+server.use(express.static('build'));
+mongoose.connect(
+    "mongodb+srv://NaberaHarsh:Harsh@1998@cluster0-ogovh.mongodb.net",{dbName:'Mahek_Jewellery',useNewUrlParser: true} // Change test to name of your DB
+  )
+  .then(() => {
+    console.log("Connected to database!");
+  })
+  .catch((error) => {
+    console.log("Connection failed!");
+    console.log(error);
+  });
+// mongoose.connect('mongodb://localhost:27017/Mahek_Jewellery', {useNewUrlParser: true});
 
 
 const productSchema= new Schema({
@@ -360,7 +370,9 @@ server.get("/newArrival/:category", function(req,res){
 
 
 
-
+server.get('*', function(req, res) {
+    res.sendFile('index.html', {root: path.join(__dirname, './build/')});
+  });
 
 
 server.listen(8080,()=>{
