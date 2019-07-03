@@ -72,7 +72,9 @@ const cartSchema= new Schema({
     name:String,
     price:Number,
     image:String,
-    quantity:Number
+    quantity:Number,
+    uid: String
+
 })
 
 const addressSchema= new Schema({ 
@@ -142,11 +144,15 @@ server.post("/product",(req,res)=>{
 server.post("/showcart",(req,res)=>{
     let cart=new Cart();
 
+    console.log(req.body.uid);
+
     cart.id=req.body.id;
     cart.name=req.body.name;
     cart.price=req.body.price;
     cart.quantity="1";
     cart.image=req.body.image;
+    cart.uid = req.body.uid;
+
 
     console.log(cart);
     cart.save();
@@ -241,7 +247,8 @@ server.get("/type/:name",function(req,res){
 })
 
 server.get("/cartItem",function(req,res){
-    Cart.find({},function(err,doc){
+    console.log("hello !!! how are.....")
+    Cart.find({uid:req.query.uid},function(err,doc){
         res.json(doc);
         console.log(doc);
     })
@@ -318,21 +325,21 @@ server.get("/filter5000/:category", function(req,res){
 })
 
 server.get("/AD/:category", function(req,res){
-    Product.find({$and: [ {category:req.params.category} , {jewellery_type:"AD"} ]},function(err,doc){
+    Product.find({$and: [ {category:req.params.category} , {jewellery_type:"American_Diamond"} ]},function(err,doc){
         res.json(doc);
         console.log(doc);
     })
 })
 
 server.get("/VJ/:category", function(req,res){
-    Product.find({$and: [ {category:req.params.category} , {jewellery_type:"Victorian Jewellery"} ]},function(err,doc){
+    Product.find({$and: [ {category:req.params.category} , {jewellery_type:"Victorian_Jewellery"} ]},function(err,doc){
         res.json(doc);
         console.log(doc);
     })
 })
 
 server.get("/AM/:category", function(req,res){
-    Product.find({$and: [ {category:req.params.category} , {jewellery_type:"Antique Items"} ]},function(err,doc){
+    Product.find({$and: [ {category:req.params.category} , {jewellery_type:"Antique_Items"} ]},function(err,doc){
         res.json(doc);
         console.log(doc);
     })
@@ -379,3 +386,5 @@ server.listen(process.env.PORT || 8080,()=>{
     console.log("server has started")
 })
 
+
+    
