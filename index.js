@@ -85,7 +85,8 @@ const addressSchema= new Schema({
           state:String,
           pincode:Number,
           mail:String,
-          pno:Number      
+          pno:Number,
+          uid:String      
 })
 
 const orderSchema = new Schema({
@@ -98,7 +99,8 @@ name:String,
           pincode:Number,
           mail:String,
           pno:Number,
-          date:{type:Date, default: Date.now}
+          date:{type:Date, default: Date.now},
+          uid: String
 
 })
 
@@ -183,6 +185,8 @@ server.post("/userAddress",(req,res)=>{
     address.pincode=req.body.pincode;
     address.mail=req.body.mail;
     address.pno=req.body.pno;
+    address.uid = req.body.uid;
+
    
     console.log(address);
     address.save();
@@ -191,6 +195,7 @@ server.post("/userAddress",(req,res)=>{
 
 server.post("/showorder",(req,res)=>{
     let order=new Order();
+    console.log(req.body.uid);
 
     order.cartinfo=req.body.cartinfo;
    order.name=req.body.name;
@@ -202,6 +207,8 @@ server.post("/showorder",(req,res)=>{
     order.mail=req.body.mail;
     order.pno=req.body.pno;
     order.date=new Date();
+    order.uid = req.body.uid;
+
     
     console.log(order);
     order.save();
@@ -255,13 +262,13 @@ server.get("/cartItem",function(req,res){
 })
 
 server.get("/getAddress",function(req,res){
-    Address.find({},function(err,doc){
+    Address.find({uid:req.query.uid},function(err,doc){
         res.json(doc);
         console.log(doc);
     })
 })
 server.get("/getorder",function(req,res){
-    Order.find({},function(err,doc){
+    Order.find({uid:req.query.uid},function(err,doc){
         res.json(doc);
         console.log(doc);
     })
